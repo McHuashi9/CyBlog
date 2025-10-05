@@ -1,5 +1,5 @@
 ---
 title: {{ title }}
-date: {{ date }}
+date: {{ date + " HH:mm:ss" }}
 tags:
 ---
