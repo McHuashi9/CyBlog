@@ -3,12 +3,12 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: CY的个人博客
-subtitle: ''
-description: ''
-keywords:
-author: John Doe
-language: en
+title: "CY的个人博客"
+subtitle: "记录生活"
+description: "一个专注于记录生活和个人思考的博客"
+keywords: "编程,技术,博客,学习"
+author: ChenYou
+language: zh-CN
 timezone: Asia/Shanghai
 
 # URL
