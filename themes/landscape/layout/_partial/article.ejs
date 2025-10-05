@@ -1,6 +1,12 @@
 <article id="<%= post.layout %>-<%= post.slug %>" class="h-entry article article-type-<%= post.layout %>" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <%- partial('post/date', {class_name: 'article-date', date_format: null}) %>
+    <% if (page.last_updated) { %>
+      <div class="post-update-time">
+      <i class="fa fa-refresh"></i>
+      最后更新: <time datetime="<%= page.last_updated %>"><%= page.last_updated %></time>
+      </div>
+    <% } %>
     <%- partial('post/category') %>
   </div>
   <div class="article-inner">
