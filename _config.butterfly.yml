@@ -289,10 +289,10 @@ aside:
       enable: true
       icon: fab fa-github
       text: Follow Me
-      link: https://github.com/xxxxxx
+      link: https://github.com/McHuashi9
   card_announcement:
     enable: true
-    content: This is my Blog
+    content: 正在努力学习博客构建
   card_recent_post:
     enable: true
     # If set 0 will show all
