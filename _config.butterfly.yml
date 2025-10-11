@@ -57,7 +57,7 @@ social:
 favicon: /img/favicon.png
 
 avatar:
-  img: /img/butterfly-icon.png
+  img: /img/test_avatar.jpg
   effect: false
 
 # Disable all banner images
@@ -67,7 +67,7 @@ disable_top_img: false
 default_top_img:
 
 # The banner image of index page
-index_img:
+index_img: /img/原神神里绫华4k超清电脑桌面壁纸3840x2160_每日美图.jpg
 
 # The banner image of archive page
 archive_img:
@@ -93,7 +93,7 @@ footer_img: false
 
 # Website Background
 # Can set it to color or image url
-background:
+background: /img/刻晴 涂鸦墙背景 4K壁纸 3840x2160_每日美图.jpg
 
 cover:
   # Disable the cover or not
@@ -757,12 +757,12 @@ site_verification:
 
 theme_color:
   enable: true
-  main: "#49B1F5"
-  paginator: "#00c4b6"
-  button_hover: "#FF7242"
-  text_selection: "#00c4b6"
-  link_color: "#99a9bf"
-  link_hover: "#F47466" #源文件没有的
+  main: "#49B1F5"        # 主色调
+  paginator: "#00c4b6"   # 分页器颜色
+  button_hover: "#FF7242" # 按钮悬停色
+  text_selection: "#00c4b6" # 文本选中色
+  link_color: "#99a9bf"  # 链接颜色
+  link_hover: "#F47466"  # 链接悬停色
 #   meta_color: "#858585"
 #   hr_color: "#A4D8FA"
 #   code_foreground: "#F47466"
@@ -820,9 +820,9 @@ beautify:
 # Global font settings
 # Don't modify the following settings unless you know how they work
 font:
-  global_font_size:
-  code_font_size:
-  font_family:
+  global_font_size: 14px
+  code_font_size: 14px
+  font_family: "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif"
   code_font_family:
 
 # Font settings for the site title and site subtitle
