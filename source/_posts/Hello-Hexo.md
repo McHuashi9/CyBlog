@@ -1,7 +1,8 @@
 ---
 title: Hello Hexo
 date: 2025-10-05 02:03:09
-tags:
+tags: [Hexo, 博客]
+categories: [博客]
 ---
 # 欢迎来到我的博客！
 这是我的第一篇文章，用 **Markdown** 语法编写。
