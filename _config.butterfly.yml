@@ -1130,3 +1130,25 @@ CDN:
     # valine:
     # waline_css:
     # waline_js:
+
+# 归档页面配置
+archive:
+  layout: page
+  title: 文章归档
+  subtitle: '按时间顺序浏览所有文章'
+  # 可以添加更多自定义
+  # banner: /img/archive-banner.jpg  # 归档页面横幅
+
+# 标签页面配置
+tag:
+  layout: page
+  title: 标签
+  subtitle: '按标签浏览文章'
+  # banner: /img/tags-banner.jpg
+
+# 分类页面配置  
+category:
+  layout: page
+  title: 分类
+  subtitle: '按分类浏览文章'
+  # banner: /img/categories-banner.jpg
