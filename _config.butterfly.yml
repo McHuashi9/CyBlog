@@ -449,21 +449,24 @@ busuanzi:
 # About the per_page
 # if you set it to true, it will load mathjax/katex script in each page
 # if you set it to false, it will load mathjax/katex script according to your setting (add the 'mathjax: true' or 'katex: true' in page's front-matter)
+# Math Formulas Render Support
 math:
-  # Choose: mathjax, katex
-  # Leave it empty if you don't need math
-  use:
+  enable: false
+  # Default (true) will load mathjax / katex script on demand.
+  # That is it only render those page which has `mathjax: true` in front-matter.
+  # If you set it to false, it will load mathjax / katex script EVERY PAGE.
   per_page: true
-  hide_scrollbar: false
 
-  mathjax:
-    # Enable the contextual menu
-    enableMenu: true
-    # Choose: all / ams / none, This controls whether equations are numbered and how
-    tags: none
+  # You can use other render engines to render, for example: mathjax, katex.
+  engine: katex
+  # engine: mathjax
 
+  # if you set `engine: katex`, you need to set the following:
   katex:
-    # Enable the copy KaTeX formula
+    # Use 0.11.1 version (default) or 0.13.18 version?
+    # version: 0.11.1
+    version: 0.13.18
+    # If you want to use katex, you must set the following to false
     copy_tex: false
 
 # --------------------------------------

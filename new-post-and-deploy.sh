@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# 文章创建和发布脚本 - 修复版
+# 文章创建和发布脚本 - 修复版（移除内容检测）
 set -e
 
 show_help() {
@@ -44,23 +44,17 @@ if [ -f "$post_file" ]; then
 fi
 
 # 创建文章框架
+# 在创建文章框架的部分修改为：
 cat > "$post_file" << EOF
 ---
 title: $title
 date: $(date +"%Y-%m-%d %H:%M:%S")
-tags: [暂未分类]
-categories: [默认分类]
+tags: []
+categories: []
+mathjax: true  # 启用数学公式
 ---
 
-# $title
 
-在这里开始撰写您的内容...
-
-<!-- more -->
-
-## 正文
-
-您的文章内容...
 EOF
 
 echo "✅ 文章框架已创建"
@@ -69,13 +63,6 @@ echo "📝 请用 VSCode 编辑文件:"
 echo "   code $post_file"
 echo ""
 read -p "编辑完成后按回车键提交并发布..."
-
-# 检查是否有实际内容更改
-if git diff --quiet "$post_file" 2>/dev/null; then
-    echo "⚠️  未检测到内容更改，请确认已编辑文章内容"
-    echo "💡 提示: 请确保添加了实际的文章内容，而不仅仅是模板"
-    exit 1
-fi
 
 # 提交并推送
 echo "提交更改..."

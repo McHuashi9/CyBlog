@@ -75,3 +75,32 @@ if theme.blog_title_font && theme.blog_title_font.font_link
 include ./head/config_site.pug
 
 !=fragment_cache('injectHead', function(){return injectHtml(theme.inject.head)})
+
+//- KaTeX CSS
+link(rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css")
+
+//- KaTeX JS
+script(defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js")
+script(defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/contrib/auto-render.min.js")
+
+script.
+  document.addEventListener("DOMContentLoaded", function() {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false},
+        {left: '\\(', right: '\\)', display: false},
+        {left: '\\[', right: '\\]', display: true}
+      ],
+      throwOnError: false,
+      // 关键配置：启用严格模式
+      strict: true,
+      trust: false,
+      // 添加宏定义
+      macros: {
+        "\\bmod": "\\bmod",
+        "\\mod": "\\bmod",
+        "\\pmod": "\\pmod"
+      }
+    });
+  });
