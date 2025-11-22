@@ -38,25 +38,30 @@
 ### 2025-11-22: 创建项目
 **目标**: 重新创建项目并完成基础配置
 **步骤**:
+
 1. 环境检查
 ```bash
 node --version # v18.20.8
 npm --version # 10.8.2
 git --version # 2.43.0
 ```
+
 2. 创建新项目目录
 ```bash
 mkdir cyblog && cd cyblog
 ```
+
 3. 初始化 Hexo 项目并安装核心依赖
 ```bash
 npm install hexo@^6.0.0 --save
 npm install hexo-server hexo-generator-index hexo-generator-archive hexo-generator-tag hexo-generator-category --save
 ```
+
 4. 优先配置数学公式渲染
 ```bash
 npm install hexo-renderer-markdown-it markdown-it-katex --save
 ```
+
 5. 配置数学渲染，在 _config.yml 中添加了如下内容
 ```yaml
 # Markdown 配置
@@ -77,6 +82,7 @@ katex:
   # 如果需要在所有页面加载 KaTeX CSS，设为 true
   every_page: false
 ```
+
 6. 安装 Butterfly 主题
 ```bash
 # 安全安装主题（避免子模块问题）
@@ -129,8 +135,10 @@ hexo g
 hexo s
 ```
 测试成功，已经成功切换为 butterfly 主题
+
 8. 测试数学公式渲染
 测试未成功，不能渲染出数学公式，但决定先放一放，到时候再解决
+
 9. 配置基础站点信息
 编辑 `_config.yml` 设置基础信息：
 ```yaml
@@ -146,9 +154,14 @@ timezone: 'Asia/Shanghai'
 # URL (暂时用本地，部署时修改)
 url: http://localhost:4000
 ```
+
 10. 初始化 Git 并连接 GitHub
 
 ```bash
+# 删除主题目录中的 .git 文件夹，使其变成普通目录
+rm -rf themes/butterfly/.git
+# 重新添加到 Git
+git add themes/butterfly
 # 初始化 Git
 git init
 # 添加所有文件
@@ -161,7 +174,24 @@ git commit -m "feat: 初始化 Hexo v2.0 项目
 - 基础项目结构"
 # 添加远程仓库
 git remote add origin git@github.com:McHuashi9/CyBlog.git
-# 推送到 GitHub (如果冲突可能需要强制推送)
-git push -u origin main
-# 或者如果分支是 master: git push -u origin master
+# 强制推送覆盖远程仓库
+git push --force origin main
+```
+
+11. CloudFlare 构建问题修复
+**问题现象:**
+CloudFlare Pages 构建失败，错误信息：
+`fatal: No url found for submodule path 'themes/butterfly' in .gitmodules`
+
+**问题原因：**
+- 强制推送后，`themes/butterfly` 目录保留了自身的 `.git` 文件夹
+- CloudFlare 误判为主题是 Git 子模块
+- 但实际没有配置 `.gitmodules` 文件，导致构建失败
+
+**解决方案：**
+```bash
+# 移除主题目录的 Git 信息
+rm -rf themes/butterfly/.git
+# 重新提交推送
+git add . && git commit -m "fix: 移除butterfly主题的.git目录，修复CloudFlare子模块错误" && git push origin main
 ```
