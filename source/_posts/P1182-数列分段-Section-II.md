@@ -1,7 +1,9 @@
 ---
 title: P1182 数列分段 Section II
 date: 2025-11-30 17:37:53
-tags: 二分, 洛谷
+tags: 
+    - 二分
+    - 洛谷
 ---
 
 # P1182 数列分段 Section II

@@ -1,7 +1,6 @@
 #!/bin/bash
 
-# Hexo 博客发布脚本 - 简化版
-# 先确保基本功能正常，后续再添加标签功能
+# Hexo 博客发布脚本 - 修复重复 tags 问题
 
 set -e
 
@@ -25,26 +24,10 @@ error() {
     echo -e "${RED}[ERROR]${NC} $1"
 }
 
-# 检查基本环境
-check_environment() {
-    log "检查环境..."
-    
-    if ! command -v hexo &> /dev/null; then
-        error "Hexo 未安装或不在 PATH 中"
-        exit 1
-    fi
-    
-    if ! command -v git &> /dev/null; then
-        error "Git 未安装"
-        exit 1
-    fi
-    
-    log "环境检查通过"
-}
-
-# 创建新文章（简化版，不添加标签）
-create_post() {
+# 创建新文章并添加标签（正确格式）
+create_post_with_tags() {
     local title="$1"
+    local tags_input="$2"
     
     log "创建新文章: $title"
     
@@ -71,6 +54,69 @@ create_post() {
             error "无法找到新创建的文章文件"
             return 1
         fi
+    fi
+    
+    # 如果有标签，添加到文章 front-matter（正确格式）
+    if [[ -n "$tags_input" ]]; then
+        log "添加标签: $tags_input"
+        
+        # 创建临时文件
+        local temp_file=$(mktemp)
+        
+        # 处理标签输入并构建正确的 YAML 格式
+        local normalized_input=$(echo "$tags_input" | sed 's/，/,/g')
+        IFS=',' read -ra TAG_ARRAY <<< "$normalized_input"
+        
+        # 构建标签部分
+        local tags_block="tags:"
+        for tag in "${TAG_ARRAY[@]}"; do
+            # 去除前后空格
+            tag=$(echo "$tag" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+            if [[ -n "$tag" ]]; then
+                tags_block+="\n  - $tag"
+            fi
+        done
+        
+        # 处理文件内容，在 date 行后插入 tags，但确保只插入一次
+        local in_front_matter=true
+        local date_found=false
+        local tags_inserted=false
+        
+        while IFS= read -r line; do
+            # 如果已经找到 date 行但还没有插入 tags，并且当前行不是 tags 行
+            if [[ "$date_found" == true && "$tags_inserted" == false && ! "$line" =~ ^tags: ]]; then
+                echo -e "$tags_block" >> "$temp_file"
+                tags_inserted=true
+            fi
+            
+            # 检查是否是 date 行
+            if [[ "$line" =~ ^date: ]]; then
+                date_found=true
+            fi
+            
+            # 跳过已有的 tags 行（如果存在）
+            if [[ "$line" =~ ^tags: ]]; then
+                warn "发现已有 tags 字段，跳过并替换为新标签"
+                continue
+            fi
+            
+            # 写入当前行
+            echo "$line" >> "$temp_file"
+            
+            # 检查 front-matter 结束
+            if [[ "$line" == "---" ]] && [[ "$date_found" == true ]]; then
+                in_front_matter=false
+                # 如果在 front-matter 结束前还没有插入 tags，现在插入
+                if [[ "$tags_inserted" == false ]]; then
+                    echo -e "$tags_block" >> "$temp_file"
+                    tags_inserted=true
+                fi
+            fi
+        done < "$filepath"
+        
+        # 用临时文件替换原文件
+        mv "$temp_file" "$filepath"
+        log "标签已添加（正确格式）"
     fi
     
     echo "$filepath"
@@ -105,10 +151,7 @@ push_to_github() {
 
 # 主函数
 main() {
-    log "Hexo 博客发布脚本 - 简化版"
-    
-    # 检查环境
-    check_environment
+    log "Hexo 博客发布脚本"
     
     # 获取文章标题
     read -p "请输入文章标题: " title
@@ -117,16 +160,23 @@ main() {
         exit 1
     fi
     
-    # 创建文章（不添加标签）
-    post_file=$(create_post "$title")
+    # 获取文章标签
+    echo
+    echo "请输入文章标签："
+    echo "- 多个标签用逗号分隔（支持中英文逗号）"
+    echo "- 标签可以有空格和中文"
+    echo "- 不需要用双引号括起来"
+    echo "- 例如：技术博客, Hexo教程, 网站开发"
+    read -p "标签: " tags_input
+    
+    # 创建文章（添加正确格式的标签）
+    post_file=$(create_post_with_tags "$title" "$tags_input")
     if [[ $? -ne 0 ]]; then
         error "创建文章失败"
         exit 1
     fi
     
-    log "文章创建成功: $filepath"
-    log "请手动编辑文件添加标签，然后使用您喜欢的编辑器编辑内容"
-    log "文件位置: $post_file"
+    log "文章创建成功: $post_file"
     
     # 等待用户编辑完成
     echo
