@@ -31,128 +31,73 @@
 **决策原因**: 放弃 Butterfly 主题，选择对数学公式支持更好的 NexT 主题
 
 **环境状态**:
-- Node.js: v18.20.8
-- Hexo: 6.3.0
+- Node.js: v20.19.0 (从 v18.20.8 升级)
+- Hexo: 8.1.1
 - 主题: NexT (通过 npm 安装)
 
 **步骤**:
 
-1. 环境检查
+1. 环境检查与升级
 ```bash
-<<<<<<< HEAD
 node --version # v20.19.0
-=======
-node --version # v18.20.8
->>>>>>> f369ce0519b769e767a7874174bfebab2f84fad0
 npm --version # 10.8.2
 git --version # 2.43.0
+
+# 解决 Node.js 版本兼容性问题
+nvm install 20.19.0
+nvm use --delete-prefix v20.19.0
 ```
 
-2. 安装 next 主题
+2. 项目初始化与主题安装
 ```bash
 mkdir Cyblog
 cd Cyblog/
 hexo init .
-nvm install 20.19.0
-nvm use 20.19.0
-rm -rf node_modules
 npm install
 npm install hexo-theme-next
 ```
 
-3. 修改Hexo 的主配置文件 `_config.yml`
+3. 基础配置
+- 修改 `_config.yml` 设置主题为 next
+- 配置站点基本信息：标题、语言、时区等
 
-设置主题为 next ：
+4. 数学公式功能配置
+- 创建 NexT 主题配置文件 `_config.next.yml`
+- 初始尝试使用 KaTeX，但渲染失败
+- 更换多种 Markdown 渲染器：
+  - 尝试 hexo-renderer-pandoc（需要系统依赖，失败）
+  - 最终使用 hexo-renderer-kramed（成功）
+- 配置 kramed 渲染器支持数学公式语法
+- 最终切换回 MathJax，行内公式渲染成功
 
-```yaml
-theme: next
-```
+5. 版本控制与部署
+- 初始化 Git 仓库并连接到远程仓库
+- 解决合并冲突（配置文件、依赖版本）
+- 成功推送到 GitHub 并触发 Cloudflare Pages 自动部署
 
-设置标题、语言、时区等：
-
-```yaml
-title: CY的个人博客
-subtitle: '记录生活'
-description: '存我的笔记'
-keywords: '笔记, 日常'
-author: ChenYou
-language: zh-CN
-timezone: Asia/Shanghai
-```
-
-4. 创建 NexT 主题配置文件并编辑
-
+6. 依赖兼容性问题解决
+- 遇到 ESM 模块兼容性错误（ERR_REQUIRE_ESM）
+- 通过清理缓存和重新安装依赖解决问题：
 ```bash
-# 从主题目录复制默认配置到根目录
-cp node_modules/hexo-theme-next/_config.yml _config.next.yml
+npm cache clean --force
+rm -rf node_modules
+npm install
 ```
 
-编辑这个新创建的配置文件的 `math` 部分，修改为：
+**技术决策记录**:
+- 选择 MathJax 而非 KaTeX：虽然 KaTeX 性能更好，但 MathJax 在当前环境下兼容性更佳
+- 使用 hexo-renderer-kramed：专门优化数学公式渲染的 Markdown 解析器
+- 启用全局数学公式渲染：简化文章 Front-matter 配置
+- 锁定依赖版本：避免未来出现类似的 ESM 兼容性问题
 
+**关键配置**:
 ```yaml
+# _config.next.yml 数学公式配置
 math:
-  # Default (false) will load mathjax / katex script on demand.
-  # That is it only render those page which has `mathjax: true` in front-matter.
-  # If you set it to true, it will load mathjax / katex script EVERY PAGE.
   every_page: true
-
-  mathjax:
-    enable: false
-    # Available values: none | ams | all
-    tags: none
-
-  katex:
-    enable: true
-    # See: https://github.com/KaTeX/KaTeX/tree/master/contrib/copy-tex
-    copy_tex:
-      enable: true
-```
-
-5. 更换 Markdown 渲染器
-
-安装支持数学公式的 Markdown 渲染器：
-
-```bash
-npm uninstall hexo-renderer-marked --save
-npm install hexo-renderer-pandoc --save
-# 卸载 pandoc 渲染器
-npm uninstall hexo-renderer-pandoc --save
-# 安装 kramed 渲染器（专门处理数学公式）
-npm install hexo-renderer-kramed --save
-```
-
-在 `_config.yml` 文件末尾添加以下配置：
-
-```yaml
-kramed:
-  enable: true
-  blocks:
-    math: true
-  inlineMath:
-    - ["$", "$"]
-    - ["\\(", "\\)"]
-  blockMath:
-    - ["$$", "$$"]
-    - ["\\[", "\\]"]
-```
-
-编辑 _config.next.yml 切换回 MathJax ：
-
-```yaml
-math:
-  # Default (false) will load mathjax / katex script on demand.
-  # That is it only render those page which has `mathjax: true` in front-matter.
-  # If you set it to true, it will load mathjax / katex script EVERY PAGE.
-  every_page: true
-
   mathjax:
     enable: true
-    # Available values: none | ams | all
     tags: none
-
   katex:
     enable: false
-    # See: https://github.com/KaTeX/KaTeX/tree/master/contrib/copy-tex
-    copy_tex:
-      enable: true
 ```
