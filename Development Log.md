@@ -39,7 +39,11 @@
 
 1. 环境检查
 ```bash
+<<<<<<< HEAD
 node --version # v20.19.0
+=======
+node --version # v18.20.8
+>>>>>>> f369ce0519b769e767a7874174bfebab2f84fad0
 npm --version # 10.8.2
 git --version # 2.43.0
 ```
