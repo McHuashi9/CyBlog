@@ -163,4 +163,4 @@ $$
 | 类型 | LaTeX 语法 | 示例 | 效果 |
 |------|-------------|------|------|
 | 花括号 | `\{ \}` | `\{a+b\}` | $\{a+b\}$ |
-| 自适应括号 | `\left( \right)` | `$\left(\frac{a}{b}\right)$` | $\left(\frac{a}{b}\right)$ |
+| 自适应括号 | `\left( \right)` | `\left(\frac{a}{b}\right)` | $\left(\frac{a}{b}\right)$ |
