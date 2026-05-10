@@ -1,0 +1,86 @@
+baseURL: https://cyblog.pages.dev
+locale: zh
+title: CyBlog
+theme: stack
+hasCJKLanguage: true
+
+pagination:
+  pagerSize: 5
+
+permalinks:
+  post: /p/:slug/
+
+params:
+  mainSections:
+    - posts
+  rssFullContent: true
+
+  footer:
+    since: 2025
+    customText: ""
+
+  dateFormat:
+    published: ":date_full"
+    lastUpdated: ":date_full"
+
+  sidebar:
+    compact: false
+    emoji: "🐱"
+    subtitle: ""
+    avatar: "img/avatar.svg"
+
+  article:
+    math: true
+    toc: true
+    readingTime: true
+    headingAnchor: true
+    list:
+      showTags: true
+    license:
+      enabled: true
+      default: "Licensed under CC BY-NC-SA 4.0"
+
+  widgets:
+    homepage:
+      - type: search
+      - type: archives
+        params:
+          limit: 10
+      - type: tag-cloud
+        params:
+          max: 10
+    page:
+      - type: toc
+
+  colorScheme:
+    toggle: true
+    default: auto
+
+  comments:
+    enabled: false
+
+menu:
+  main:
+    - identifier: home
+      name: 首页
+      url: /
+      weight: 1
+    - identifier: archives
+      name: 归档
+      url: /archives/
+      weight: 2
+    - identifier: tags
+      name: 标签
+      url: /tags/
+      weight: 3
+  social:
+    - identifier: github
+      name: GitHub
+      url: https://github.com/McHuashi9
+      params:
+        icon: brand-github
+    - identifier: rss
+      name: RSS
+      url: /index.xml
+      params:
+        icon: rss
